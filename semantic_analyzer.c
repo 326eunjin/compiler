@@ -199,7 +199,6 @@ A_TYPE *sem_expression(A_NODE *node) {
         if (!isModifiableLvalue(node->clink))
             semantic_error(60, node->line, 0);
         break;
-        break;
     case N_EXP_CAST:
         result = node->llink;
         i = sem_A_TYPE(result);
@@ -554,7 +553,8 @@ int sem_statement_list(A_NODE *node, int addr, A_TYPE *ret, BOOLEAN sw,
         size = sem_statement(node->llink, addr, ret, sw, brk, cnt);
         i = sem_statement_list(node->rlink, addr, ret, sw, brk, cnt);
         if (size < i)
-            break;
+            size = i;
+        break;
     case N_STMT_LIST_NIL:
         size = 0;
         break;
@@ -1172,6 +1172,7 @@ A_LITERAL getTypeAndValueOfExpression(A_NODE *node) {
         semantic_error(90, node->line, 0);
         break;
     }
+    return (result);
 }
 
 void semantic_error(int i, int ll, char *s) {
