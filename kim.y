@@ -5,6 +5,9 @@ typedef long YYSTYPE;
 #include <stdlib.h>
 #include "type.h"
 
+extern void semantic_analysis(A_NODE *);
+extern void print_sem_ast(A_NODE *);
+extern void rpint_ast(A_NODE *node);
 extern int yylex();
 extern void print_ast(A_NODE *node);
 extern int line_no, syntax_err;
@@ -352,8 +355,11 @@ void main ()
 {
 	initialize();
 	yyparse();
-	if (syntax_err == 0)
-		print_ast(root);
+	if (syntax_err)
+		exit(1);
+	print_ast(root);
+	semantic_analysis(root);
+	print_sem_ast(root);
 }
 
 void yyerror(char *msg) {

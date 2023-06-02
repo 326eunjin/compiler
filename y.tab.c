@@ -27,6 +27,9 @@ typedef long YYSTYPE;
 #include <stdlib.h>
 #include "type.h"
 
+extern void semantic_analysis(A_NODE *);
+extern void print_sem_ast(A_NODE *);
+extern void rpint_ast(A_NODE *node);
 extern int yylex();
 extern void print_ast(A_NODE *node);
 extern int line_no, syntax_err;
@@ -71,7 +74,7 @@ BOOLEAN isPointerOrArrayType(A_TYPE *);
 
 void initialize();
 void yyerror(char *msg);
-#line 75 "y.tab.c"
+#line 78 "y.tab.c"
 
 #if ! defined(YYSTYPE) && ! defined(YYSTYPE_IS_DECLARED)
 /* Default: YYSTYPE is the semantic value type. */
@@ -1042,21 +1045,24 @@ static YYINT  *yylexp = 0;
 
 static YYINT  *yylexemes = 0;
 #endif /* YYBTYACC */
-#line 350 "kim.y"
+#line 353 "kim.y"
 
 void main ()
 {
 	initialize();
 	yyparse();
-	if (syntax_err == 0)
-		print_ast(root);
+	if (syntax_err)
+		exit(1);
+	print_ast(root);
+	semantic_analysis(root);
+	print_sem_ast(root);
 }
 
 void yyerror(char *msg) {
     printf("line : %d %s\n", line_no, msg);
     exit(1);
 }
-#line 1060 "y.tab.c"
+#line 1066 "y.tab.c"
 
 /* For use in generated program */
 #define yydepth (int)(yystack.s_mark - yystack.s_base)
@@ -1727,861 +1733,861 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 63 "kim.y"
+#line 66 "kim.y"
 	{checkForwardReference();root=makeNode(N_PROGRAM,NIL,yystack.l_mark[0],NIL);}
-#line 1733 "y.tab.c"
+#line 1739 "y.tab.c"
 break;
 case 2:
-#line 65 "kim.y"
+#line 68 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1738 "y.tab.c"
+#line 1744 "y.tab.c"
 break;
 case 3:
-#line 66 "kim.y"
+#line 69 "kim.y"
 	{yyval=linkDeclaratorList(yystack.l_mark[-1],yystack.l_mark[0]);}
-#line 1743 "y.tab.c"
+#line 1749 "y.tab.c"
 break;
 case 4:
-#line 69 "kim.y"
+#line 72 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1748 "y.tab.c"
+#line 1754 "y.tab.c"
 break;
 case 5:
-#line 70 "kim.y"
+#line 73 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1753 "y.tab.c"
+#line 1759 "y.tab.c"
 break;
 case 6:
-#line 73 "kim.y"
+#line 76 "kim.y"
 	{yyval=setFunctionDeclaratorSpecifier(yystack.l_mark[0],yystack.l_mark[-1]);}
-#line 1758 "y.tab.c"
+#line 1764 "y.tab.c"
 break;
 case 7:
-#line 73 "kim.y"
+#line 76 "kim.y"
 	{yyval=setFunctionDeclaratorBody(yystack.l_mark[-1],yystack.l_mark[0]);}
-#line 1763 "y.tab.c"
+#line 1769 "y.tab.c"
 break;
 case 8:
-#line 74 "kim.y"
+#line 77 "kim.y"
 	{yyval=setFunctionDeclaratorSpecifier(yystack.l_mark[0],makeSpecifier(int_type,0));}
-#line 1768 "y.tab.c"
+#line 1774 "y.tab.c"
 break;
 case 9:
-#line 74 "kim.y"
+#line 77 "kim.y"
 	{yyval=setFunctionDeclaratorBody(yystack.l_mark[-1],yystack.l_mark[0]);}
-#line 1773 "y.tab.c"
+#line 1779 "y.tab.c"
 break;
 case 10:
-#line 77 "kim.y"
+#line 80 "kim.y"
 	{yyval=setDeclaratorListSpecifier(yystack.l_mark[-1],yystack.l_mark[-2]);}
-#line 1778 "y.tab.c"
+#line 1784 "y.tab.c"
 break;
 case 11:
-#line 80 "kim.y"
+#line 83 "kim.y"
 	{yyval=makeSpecifier(yystack.l_mark[0],0);}
-#line 1783 "y.tab.c"
+#line 1789 "y.tab.c"
 break;
 case 12:
-#line 81 "kim.y"
+#line 84 "kim.y"
 	{yyval=makeSpecifier(0,yystack.l_mark[0]);}
-#line 1788 "y.tab.c"
+#line 1794 "y.tab.c"
 break;
 case 13:
-#line 82 "kim.y"
+#line 85 "kim.y"
 	{yyval=updateSpecifier(yystack.l_mark[0],yystack.l_mark[-1],0);}
-#line 1793 "y.tab.c"
+#line 1799 "y.tab.c"
 break;
 case 14:
-#line 83 "kim.y"
+#line 86 "kim.y"
 	{yyval=updateSpecifier(yystack.l_mark[0],0,yystack.l_mark[-1]);}
-#line 1798 "y.tab.c"
+#line 1804 "y.tab.c"
 break;
 case 15:
-#line 86 "kim.y"
+#line 89 "kim.y"
 	{yyval=S_AUTO;}
-#line 1803 "y.tab.c"
+#line 1809 "y.tab.c"
 break;
 case 16:
-#line 87 "kim.y"
+#line 90 "kim.y"
 	{yyval=S_STATIC;}
-#line 1808 "y.tab.c"
+#line 1814 "y.tab.c"
 break;
 case 17:
-#line 88 "kim.y"
+#line 91 "kim.y"
 	{yyval=S_TYPEDEF;}
-#line 1813 "y.tab.c"
+#line 1819 "y.tab.c"
 break;
 case 18:
-#line 91 "kim.y"
+#line 94 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1818 "y.tab.c"
+#line 1824 "y.tab.c"
 break;
 case 19:
-#line 92 "kim.y"
+#line 95 "kim.y"
 	{yyval=linkDeclaratorList(yystack.l_mark[-2],yystack.l_mark[0]);}
-#line 1823 "y.tab.c"
+#line 1829 "y.tab.c"
 break;
 case 20:
-#line 95 "kim.y"
+#line 98 "kim.y"
 	{yyval=NIL;}
-#line 1828 "y.tab.c"
+#line 1834 "y.tab.c"
 break;
 case 21:
-#line 96 "kim.y"
-	{yyval=yystack.l_mark[0];}
-#line 1833 "y.tab.c"
-break;
-case 22:
 #line 99 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1838 "y.tab.c"
+#line 1839 "y.tab.c"
+break;
+case 22:
+#line 102 "kim.y"
+	{yyval=yystack.l_mark[0];}
+#line 1844 "y.tab.c"
 break;
 case 23:
-#line 100 "kim.y"
+#line 103 "kim.y"
 	{yyval=setDeclaratorInit(yystack.l_mark[-2],yystack.l_mark[0]);}
-#line 1843 "y.tab.c"
+#line 1849 "y.tab.c"
 break;
 case 24:
-#line 103 "kim.y"
+#line 106 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1848 "y.tab.c"
+#line 1854 "y.tab.c"
 break;
 case 25:
-#line 104 "kim.y"
+#line 107 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1853 "y.tab.c"
+#line 1859 "y.tab.c"
 break;
 case 26:
-#line 105 "kim.y"
+#line 108 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1858 "y.tab.c"
+#line 1864 "y.tab.c"
 break;
 case 27:
-#line 108 "kim.y"
+#line 111 "kim.y"
 	{yyval=setTypeStructOrEnumIdentifier(yystack.l_mark[-1],yystack.l_mark[0],ID_STRUCT);}
-#line 1863 "y.tab.c"
+#line 1869 "y.tab.c"
 break;
 case 28:
-#line 108 "kim.y"
+#line 111 "kim.y"
 	{yyval=current_id; current_level++;}
-#line 1868 "y.tab.c"
+#line 1874 "y.tab.c"
 break;
 case 29:
-#line 108 "kim.y"
+#line 111 "kim.y"
 	{yyval = setTypeField(yystack.l_mark[-4],yystack.l_mark[-1]);checkForwardReference(); current_level--; current_id=yystack.l_mark[-2];}
-#line 1873 "y.tab.c"
+#line 1879 "y.tab.c"
 break;
 case 30:
-#line 109 "kim.y"
+#line 112 "kim.y"
 	{yyval=makeType(yystack.l_mark[0]);}
-#line 1878 "y.tab.c"
+#line 1884 "y.tab.c"
 break;
 case 31:
-#line 109 "kim.y"
+#line 112 "kim.y"
 	{yyval=current_id; current_level++;}
-#line 1883 "y.tab.c"
+#line 1889 "y.tab.c"
 break;
 case 32:
-#line 109 "kim.y"
+#line 112 "kim.y"
 	{yyval=setTypeField(yystack.l_mark[-4],yystack.l_mark[-1]); checkForwardReference(); current_level--;current_id=yystack.l_mark[-2];}
-#line 1888 "y.tab.c"
+#line 1894 "y.tab.c"
 break;
 case 33:
-#line 110 "kim.y"
+#line 113 "kim.y"
 	{yyval=getTypeOfStructOrEnumRefIdentifier(yystack.l_mark[-1],yystack.l_mark[0],ID_STRUCT);}
-#line 1893 "y.tab.c"
+#line 1899 "y.tab.c"
 break;
 case 34:
-#line 113 "kim.y"
+#line 116 "kim.y"
 	{yyval=T_STRUCT;}
-#line 1898 "y.tab.c"
+#line 1904 "y.tab.c"
 break;
 case 35:
-#line 114 "kim.y"
+#line 117 "kim.y"
 	{yyval=T_UNION;}
-#line 1903 "y.tab.c"
+#line 1909 "y.tab.c"
 break;
 case 36:
-#line 117 "kim.y"
+#line 120 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1908 "y.tab.c"
+#line 1914 "y.tab.c"
 break;
 case 37:
-#line 118 "kim.y"
+#line 121 "kim.y"
 	{yyval=linkDeclaratorList(yystack.l_mark[-1],yystack.l_mark[0]);}
-#line 1913 "y.tab.c"
+#line 1919 "y.tab.c"
 break;
 case 38:
-#line 121 "kim.y"
+#line 124 "kim.y"
 	{yyval=setStructDeclaratorListSpecifier(yystack.l_mark[-1],yystack.l_mark[-2]);}
-#line 1918 "y.tab.c"
+#line 1924 "y.tab.c"
 break;
 case 39:
-#line 124 "kim.y"
+#line 127 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1923 "y.tab.c"
+#line 1929 "y.tab.c"
 break;
 case 40:
-#line 125 "kim.y"
+#line 128 "kim.y"
 	{yyval=linkDeclaratorList(yystack.l_mark[-2],yystack.l_mark[-1]);}
-#line 1928 "y.tab.c"
+#line 1934 "y.tab.c"
 break;
 case 41:
-#line 128 "kim.y"
+#line 131 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1933 "y.tab.c"
+#line 1939 "y.tab.c"
 break;
 case 42:
-#line 131 "kim.y"
+#line 134 "kim.y"
 	{yyval=setTypeStructOrEnumIdentifier(T_ENUM,yystack.l_mark[0],ID_ENUM);}
-#line 1938 "y.tab.c"
+#line 1944 "y.tab.c"
 break;
 case 43:
-#line 131 "kim.y"
+#line 134 "kim.y"
 	{yyval=setTypeField(yystack.l_mark[-3],yystack.l_mark[-1]);}
-#line 1943 "y.tab.c"
+#line 1949 "y.tab.c"
 break;
 case 44:
-#line 132 "kim.y"
+#line 135 "kim.y"
 	{yyval=makeType(T_ENUM);}
-#line 1948 "y.tab.c"
+#line 1954 "y.tab.c"
 break;
 case 45:
-#line 132 "kim.y"
+#line 135 "kim.y"
 	{yyval=setTypeField(yystack.l_mark[-3],yystack.l_mark[-1]);}
-#line 1953 "y.tab.c"
+#line 1959 "y.tab.c"
 break;
 case 46:
-#line 133 "kim.y"
+#line 136 "kim.y"
 	{yyval=getTypeOfStructOrEnumRefIdentifier(T_ENUM,yystack.l_mark[0],ID_ENUM);}
-#line 1958 "y.tab.c"
+#line 1964 "y.tab.c"
 break;
 case 47:
-#line 136 "kim.y"
+#line 139 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1963 "y.tab.c"
+#line 1969 "y.tab.c"
 break;
 case 48:
-#line 137 "kim.y"
+#line 140 "kim.y"
 	{yyval=linkDeclaratorList(yystack.l_mark[-2],yystack.l_mark[0]);}
-#line 1968 "y.tab.c"
+#line 1974 "y.tab.c"
 break;
 case 49:
-#line 140 "kim.y"
+#line 143 "kim.y"
 	{yyval=setDeclaratorKind(makeIdentifier(yystack.l_mark[0]),ID_ENUM_LITERAL);}
-#line 1973 "y.tab.c"
+#line 1979 "y.tab.c"
 break;
 case 50:
-#line 141 "kim.y"
+#line 144 "kim.y"
 	{yyval=setDeclaratorKind(makeIdentifier(yystack.l_mark[0]), ID_ENUM_LITERAL);}
-#line 1978 "y.tab.c"
+#line 1984 "y.tab.c"
 break;
 case 51:
-#line 141 "kim.y"
+#line 144 "kim.y"
 	{yyval=setDeclaratorInit(yystack.l_mark[-2],yystack.l_mark[0]);}
-#line 1983 "y.tab.c"
+#line 1989 "y.tab.c"
 break;
 case 52:
-#line 144 "kim.y"
+#line 147 "kim.y"
 	{yyval=setDeclaratorElementType(yystack.l_mark[0],yystack.l_mark[-1]);}
-#line 1988 "y.tab.c"
+#line 1994 "y.tab.c"
 break;
 case 53:
-#line 145 "kim.y"
+#line 148 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 1993 "y.tab.c"
+#line 1999 "y.tab.c"
 break;
 case 54:
-#line 148 "kim.y"
+#line 151 "kim.y"
 	{yyval=makeType(T_POINTER);}
-#line 1998 "y.tab.c"
+#line 2004 "y.tab.c"
 break;
 case 55:
-#line 149 "kim.y"
+#line 152 "kim.y"
 	{yyval=setTypeElementType(yystack.l_mark[0],makeType(T_POINTER));}
-#line 2003 "y.tab.c"
+#line 2009 "y.tab.c"
 break;
 case 56:
-#line 152 "kim.y"
+#line 155 "kim.y"
 	{yyval=makeIdentifier(yystack.l_mark[0]);}
-#line 2008 "y.tab.c"
+#line 2014 "y.tab.c"
 break;
 case 57:
-#line 153 "kim.y"
+#line 156 "kim.y"
 	{yyval=yystack.l_mark[-1];}
-#line 2013 "y.tab.c"
+#line 2019 "y.tab.c"
 break;
 case 58:
-#line 154 "kim.y"
+#line 157 "kim.y"
 	{yyval=setDeclaratorElementType(yystack.l_mark[-3],setTypeExpr(makeType(T_ARRAY),yystack.l_mark[-1]));}
-#line 2018 "y.tab.c"
+#line 2024 "y.tab.c"
 break;
 case 59:
-#line 155 "kim.y"
+#line 158 "kim.y"
 	{ yyval=current_id; current_level++;}
-#line 2023 "y.tab.c"
+#line 2029 "y.tab.c"
 break;
 case 60:
-#line 155 "kim.y"
+#line 158 "kim.y"
 	{yyval=setDeclaratorElementType(yystack.l_mark[-4],setTypeField(makeType(T_FUNC),yystack.l_mark[-1])); checkForwardReference(); current_level--; current_id=yystack.l_mark[-2];}
-#line 2028 "y.tab.c"
+#line 2034 "y.tab.c"
 break;
 case 61:
-#line 158 "kim.y"
+#line 161 "kim.y"
 	{yyval=NIL;}
-#line 2033 "y.tab.c"
+#line 2039 "y.tab.c"
 break;
 case 62:
-#line 159 "kim.y"
+#line 162 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2038 "y.tab.c"
+#line 2044 "y.tab.c"
 break;
 case 63:
-#line 162 "kim.y"
+#line 165 "kim.y"
 	{yyval=NIL;}
-#line 2043 "y.tab.c"
+#line 2049 "y.tab.c"
 break;
 case 64:
-#line 163 "kim.y"
-	{yyval=yystack.l_mark[0];}
-#line 2048 "y.tab.c"
-break;
-case 65:
 #line 166 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2053 "y.tab.c"
+#line 2054 "y.tab.c"
+break;
+case 65:
+#line 169 "kim.y"
+	{yyval=yystack.l_mark[0];}
+#line 2059 "y.tab.c"
 break;
 case 66:
-#line 167 "kim.y"
+#line 170 "kim.y"
 	{yyval=linkDeclaratorList(yystack.l_mark[-2],setDeclaratorKind(makeDummyIdentifier(),ID_PARM));}
-#line 2058 "y.tab.c"
+#line 2064 "y.tab.c"
 break;
 case 67:
-#line 170 "kim.y"
+#line 173 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2063 "y.tab.c"
+#line 2069 "y.tab.c"
 break;
 case 68:
-#line 171 "kim.y"
+#line 174 "kim.y"
 	{yyval=linkDeclaratorList(yystack.l_mark[-2],yystack.l_mark[0]);}
-#line 2068 "y.tab.c"
+#line 2074 "y.tab.c"
 break;
 case 69:
-#line 174 "kim.y"
+#line 177 "kim.y"
 	{yyval=setParameterDeclaratorSpecifier(yystack.l_mark[0],yystack.l_mark[-1]);}
-#line 2073 "y.tab.c"
+#line 2079 "y.tab.c"
 break;
 case 70:
-#line 175 "kim.y"
+#line 178 "kim.y"
 	{yyval=setParameterDeclaratorSpecifier (setDeclaratorType(makeDummyIdentifier(),yystack.l_mark[0]),yystack.l_mark[-1]);}
-#line 2078 "y.tab.c"
+#line 2084 "y.tab.c"
 break;
 case 71:
-#line 178 "kim.y"
+#line 181 "kim.y"
 	{yyval=NIL;}
-#line 2083 "y.tab.c"
+#line 2089 "y.tab.c"
 break;
 case 72:
-#line 179 "kim.y"
+#line 182 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2088 "y.tab.c"
+#line 2094 "y.tab.c"
 break;
 case 73:
-#line 182 "kim.y"
+#line 185 "kim.y"
 	{yyval=makeType(T_POINTER);}
-#line 2093 "y.tab.c"
+#line 2099 "y.tab.c"
 break;
 case 74:
-#line 183 "kim.y"
+#line 186 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2098 "y.tab.c"
+#line 2104 "y.tab.c"
 break;
 case 75:
-#line 184 "kim.y"
+#line 187 "kim.y"
 	{yyval=setTypeElementType(yystack.l_mark[0],makeType(T_POINTER));}
-#line 2103 "y.tab.c"
+#line 2109 "y.tab.c"
 break;
 case 76:
-#line 187 "kim.y"
+#line 190 "kim.y"
 	{yyval=yystack.l_mark[-1];}
-#line 2108 "y.tab.c"
+#line 2114 "y.tab.c"
 break;
 case 77:
-#line 188 "kim.y"
+#line 191 "kim.y"
 	{yyval=setTypeExpr(makeType(T_ARRAY),yystack.l_mark[-1]);}
-#line 2113 "y.tab.c"
+#line 2119 "y.tab.c"
 break;
 case 78:
-#line 189 "kim.y"
+#line 192 "kim.y"
 	{yyval=setTypeElementType(yystack.l_mark[-3],setTypeExpr(makeType(T_ARRAY),yystack.l_mark[-1]));}
-#line 2118 "y.tab.c"
+#line 2124 "y.tab.c"
 break;
 case 79:
-#line 190 "kim.y"
+#line 193 "kim.y"
 	{yyval=setTypeExpr(makeType(T_FUNC),yystack.l_mark[-1]);}
-#line 2123 "y.tab.c"
+#line 2129 "y.tab.c"
 break;
 case 80:
-#line 191 "kim.y"
+#line 194 "kim.y"
 	{yyval=setTypeElementType(yystack.l_mark[-3],setTypeExpr(makeType(T_FUNC),yystack.l_mark[-1]));}
-#line 2128 "y.tab.c"
+#line 2134 "y.tab.c"
 break;
 case 81:
-#line 194 "kim.y"
+#line 197 "kim.y"
 	{yyval=makeNode(N_INIT_LIST_ONE, NIL, yystack.l_mark[0], NIL);}
-#line 2133 "y.tab.c"
+#line 2139 "y.tab.c"
 break;
 case 82:
-#line 195 "kim.y"
+#line 198 "kim.y"
 	{yyval=yystack.l_mark[-1];}
-#line 2138 "y.tab.c"
+#line 2144 "y.tab.c"
 break;
 case 83:
-#line 198 "kim.y"
+#line 201 "kim.y"
 	{yyval=makeNode(N_INIT_LIST,yystack.l_mark[0],NIL,makeNode(N_INIT_LIST_NIL,NIL,NIL,NIL));}
-#line 2143 "y.tab.c"
+#line 2149 "y.tab.c"
 break;
 case 84:
-#line 199 "kim.y"
+#line 202 "kim.y"
 	{yyval=makeNodeList(N_INIT_LIST,yystack.l_mark[-2],yystack.l_mark[0]);}
-#line 2148 "y.tab.c"
+#line 2154 "y.tab.c"
 break;
 case 85:
-#line 202 "kim.y"
-	{yyval=yystack.l_mark[0];}
-#line 2153 "y.tab.c"
-break;
-case 86:
-#line 203 "kim.y"
-	{yyval=yystack.l_mark[0];}
-#line 2158 "y.tab.c"
-break;
-case 87:
-#line 204 "kim.y"
-	{yyval=yystack.l_mark[0];}
-#line 2163 "y.tab.c"
-break;
-case 88:
 #line 205 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2168 "y.tab.c"
+#line 2159 "y.tab.c"
 break;
-case 89:
+case 86:
 #line 206 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2173 "y.tab.c"
+#line 2164 "y.tab.c"
 break;
-case 90:
+case 87:
 #line 207 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2178 "y.tab.c"
+#line 2169 "y.tab.c"
+break;
+case 88:
+#line 208 "kim.y"
+	{yyval=yystack.l_mark[0];}
+#line 2174 "y.tab.c"
+break;
+case 89:
+#line 209 "kim.y"
+	{yyval=yystack.l_mark[0];}
+#line 2179 "y.tab.c"
+break;
+case 90:
+#line 210 "kim.y"
+	{yyval=yystack.l_mark[0];}
+#line 2184 "y.tab.c"
 break;
 case 91:
-#line 210 "kim.y"
+#line 213 "kim.y"
 	{yyval=makeNode(N_STMT_LABEL_CASE,yystack.l_mark[-2],NIL,yystack.l_mark[0]);}
-#line 2183 "y.tab.c"
+#line 2189 "y.tab.c"
 break;
 case 92:
-#line 211 "kim.y"
+#line 214 "kim.y"
 	{yyval=makeNode(N_STMT_LABEL_DEFAULT,NIL,yystack.l_mark[0],NIL);}
-#line 2188 "y.tab.c"
+#line 2194 "y.tab.c"
 break;
 case 93:
-#line 214 "kim.y"
+#line 217 "kim.y"
 	{yyval=current_id; current_level++;}
-#line 2193 "y.tab.c"
+#line 2199 "y.tab.c"
 break;
 case 94:
-#line 214 "kim.y"
+#line 217 "kim.y"
 	{checkForwardReference(); current_level--;current_id=yystack.l_mark[-3];yyval=makeNode(N_STMT_COMPOUND,yystack.l_mark[-2],NIL,yystack.l_mark[-1]); }
-#line 2198 "y.tab.c"
+#line 2204 "y.tab.c"
 break;
 case 95:
-#line 217 "kim.y"
+#line 220 "kim.y"
 	{yyval=NIL;}
-#line 2203 "y.tab.c"
+#line 2209 "y.tab.c"
 break;
 case 96:
-#line 218 "kim.y"
-	{yyval=yystack.l_mark[0];}
-#line 2208 "y.tab.c"
-break;
-case 97:
 #line 221 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2213 "y.tab.c"
+#line 2214 "y.tab.c"
+break;
+case 97:
+#line 224 "kim.y"
+	{yyval=yystack.l_mark[0];}
+#line 2219 "y.tab.c"
 break;
 case 98:
-#line 222 "kim.y"
+#line 225 "kim.y"
 	{yyval=linkDeclaratorList(yystack.l_mark[-1],yystack.l_mark[0]);}
-#line 2218 "y.tab.c"
+#line 2224 "y.tab.c"
 break;
 case 99:
-#line 225 "kim.y"
+#line 228 "kim.y"
 	{yyval=makeNode(N_STMT_LIST_NIL,NIL,NIL,NIL);}
-#line 2223 "y.tab.c"
+#line 2229 "y.tab.c"
 break;
 case 100:
-#line 226 "kim.y"
+#line 229 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2228 "y.tab.c"
+#line 2234 "y.tab.c"
 break;
 case 101:
-#line 229 "kim.y"
+#line 232 "kim.y"
 	{yyval=makeNode(N_STMT_LIST,yystack.l_mark[0],NIL,makeNode(N_STMT_LIST_NIL,NIL,NIL,NIL));}
-#line 2233 "y.tab.c"
+#line 2239 "y.tab.c"
 break;
 case 102:
-#line 230 "kim.y"
+#line 233 "kim.y"
 	{yyval=makeNodeList(N_STMT_LIST,yystack.l_mark[-1],yystack.l_mark[0]);}
-#line 2238 "y.tab.c"
+#line 2244 "y.tab.c"
 break;
 case 103:
-#line 233 "kim.y"
+#line 236 "kim.y"
 	{yyval=makeNode(N_STMT_EMPTY,NIL,NIL,NIL);}
-#line 2243 "y.tab.c"
+#line 2249 "y.tab.c"
 break;
 case 104:
-#line 234 "kim.y"
+#line 237 "kim.y"
 	{yyval=makeNode(N_STMT_EXPRESSION,NIL,yystack.l_mark[-1],NIL);}
-#line 2248 "y.tab.c"
+#line 2254 "y.tab.c"
 break;
 case 105:
-#line 237 "kim.y"
+#line 240 "kim.y"
 	{yyval=makeNode(N_STMT_IF,yystack.l_mark[-2],NIL,yystack.l_mark[0]);}
-#line 2253 "y.tab.c"
+#line 2259 "y.tab.c"
 break;
 case 106:
-#line 238 "kim.y"
+#line 241 "kim.y"
 	{yyval=makeNode(N_STMT_IF_ELSE,yystack.l_mark[-4],yystack.l_mark[-2],yystack.l_mark[0]);}
-#line 2258 "y.tab.c"
+#line 2264 "y.tab.c"
 break;
 case 107:
-#line 239 "kim.y"
+#line 242 "kim.y"
 	{yyval=makeNode(N_STMT_SWITCH,yystack.l_mark[-2],NIL,yystack.l_mark[0]);}
-#line 2263 "y.tab.c"
+#line 2269 "y.tab.c"
 break;
 case 108:
-#line 242 "kim.y"
+#line 245 "kim.y"
 	{yyval=makeNode(N_STMT_WHILE,yystack.l_mark[-2],NIL,yystack.l_mark[0]);}
-#line 2268 "y.tab.c"
+#line 2274 "y.tab.c"
 break;
 case 109:
-#line 243 "kim.y"
+#line 246 "kim.y"
 	{yyval=makeNode(N_STMT_DO,yystack.l_mark[-5],NIL,yystack.l_mark[-2]);}
-#line 2273 "y.tab.c"
+#line 2279 "y.tab.c"
 break;
 case 110:
-#line 244 "kim.y"
+#line 247 "kim.y"
 	{yyval=makeNode(N_STMT_FOR,yystack.l_mark[-2],NIL,yystack.l_mark[0]);}
-#line 2278 "y.tab.c"
+#line 2284 "y.tab.c"
 break;
 case 111:
-#line 247 "kim.y"
+#line 250 "kim.y"
 	{yyval=makeNode(N_FOR_EXP,yystack.l_mark[-4],yystack.l_mark[-2],yystack.l_mark[0]);}
-#line 2283 "y.tab.c"
+#line 2289 "y.tab.c"
 break;
 case 112:
-#line 250 "kim.y"
+#line 253 "kim.y"
 	{yyval=NIL;}
-#line 2288 "y.tab.c"
+#line 2294 "y.tab.c"
 break;
 case 113:
-#line 251 "kim.y"
+#line 254 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2293 "y.tab.c"
+#line 2299 "y.tab.c"
 break;
 case 114:
-#line 254 "kim.y"
+#line 257 "kim.y"
 	{yyval=makeNode(N_STMT_RETURN, NIL,yystack.l_mark[-1],NIL);}
-#line 2298 "y.tab.c"
+#line 2304 "y.tab.c"
 break;
 case 115:
-#line 255 "kim.y"
+#line 258 "kim.y"
 	{yyval=makeNode(N_STMT_CONTINUE,NIL,NIL,NIL);}
-#line 2303 "y.tab.c"
+#line 2309 "y.tab.c"
 break;
 case 116:
-#line 256 "kim.y"
+#line 259 "kim.y"
 	{yyval=makeNode(N_STMT_BREAK,NIL,NIL,NIL);}
-#line 2308 "y.tab.c"
+#line 2314 "y.tab.c"
 break;
 case 117:
-#line 259 "kim.y"
+#line 262 "kim.y"
 	{yyval=makeNode(N_EXP_IDENT,0,getIdentifierDeclared(yystack.l_mark[0]),0);}
-#line 2313 "y.tab.c"
+#line 2319 "y.tab.c"
 break;
 case 118:
-#line 260 "kim.y"
+#line 263 "kim.y"
 	{yyval=makeNode(N_EXP_INT_CONST,0,yystack.l_mark[0],0);}
-#line 2318 "y.tab.c"
+#line 2324 "y.tab.c"
 break;
 case 119:
-#line 261 "kim.y"
+#line 264 "kim.y"
 	{yyval=makeNode(N_EXP_FLOAT_CONST,0,yystack.l_mark[0],0);}
-#line 2323 "y.tab.c"
+#line 2329 "y.tab.c"
 break;
 case 120:
-#line 262 "kim.y"
+#line 265 "kim.y"
 	{yyval=makeNode(N_EXP_CHAR_CONST,0,yystack.l_mark[0],0);}
-#line 2328 "y.tab.c"
+#line 2334 "y.tab.c"
 break;
 case 121:
-#line 263 "kim.y"
+#line 266 "kim.y"
 	{yyval=makeNode(N_EXP_STRING_LITERAL,0,yystack.l_mark[0],0);}
-#line 2333 "y.tab.c"
+#line 2339 "y.tab.c"
 break;
 case 122:
-#line 264 "kim.y"
+#line 267 "kim.y"
 	{yyval=yystack.l_mark[-1];}
-#line 2338 "y.tab.c"
+#line 2344 "y.tab.c"
 break;
 case 123:
-#line 267 "kim.y"
+#line 270 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2343 "y.tab.c"
+#line 2349 "y.tab.c"
 break;
 case 124:
-#line 268 "kim.y"
+#line 271 "kim.y"
 	{yyval=makeNode(N_EXP_ARRAY,yystack.l_mark[-3],0,yystack.l_mark[-1]);}
-#line 2348 "y.tab.c"
+#line 2354 "y.tab.c"
 break;
 case 125:
-#line 269 "kim.y"
+#line 272 "kim.y"
 	{yyval=makeNode(N_EXP_FUNCTION_CALL,yystack.l_mark[-3],0,yystack.l_mark[-1]);}
-#line 2353 "y.tab.c"
+#line 2359 "y.tab.c"
 break;
 case 126:
-#line 270 "kim.y"
+#line 273 "kim.y"
 	{yyval=makeNode(N_EXP_STRUCT,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2358 "y.tab.c"
+#line 2364 "y.tab.c"
 break;
 case 127:
-#line 271 "kim.y"
+#line 274 "kim.y"
 	{yyval=makeNode(N_EXP_ARROW,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2363 "y.tab.c"
+#line 2369 "y.tab.c"
 break;
 case 128:
-#line 272 "kim.y"
+#line 275 "kim.y"
 	{yyval=makeNode(N_EXP_POST_INC,0,yystack.l_mark[-1],0);}
-#line 2368 "y.tab.c"
+#line 2374 "y.tab.c"
 break;
 case 129:
-#line 273 "kim.y"
+#line 276 "kim.y"
 	{yyval=makeNode(N_EXP_POST_DEC,0,yystack.l_mark[-1],0);}
-#line 2373 "y.tab.c"
+#line 2379 "y.tab.c"
 break;
 case 130:
-#line 276 "kim.y"
+#line 279 "kim.y"
 	{yyval=makeNode(N_ARG_LIST_NIL,NIL,NIL,NIL);}
-#line 2378 "y.tab.c"
+#line 2384 "y.tab.c"
 break;
 case 131:
-#line 277 "kim.y"
+#line 280 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2383 "y.tab.c"
+#line 2389 "y.tab.c"
 break;
 case 132:
-#line 280 "kim.y"
+#line 283 "kim.y"
 	{yyval=makeNode(N_ARG_LIST,yystack.l_mark[0],NIL,makeNode(N_ARG_LIST_NIL,NIL,NIL,NIL));}
-#line 2388 "y.tab.c"
+#line 2394 "y.tab.c"
 break;
 case 133:
-#line 281 "kim.y"
+#line 284 "kim.y"
 	{yyval=makeNodeList(N_ARG_LIST,yystack.l_mark[-2],yystack.l_mark[0]);}
-#line 2393 "y.tab.c"
+#line 2399 "y.tab.c"
 break;
 case 134:
-#line 284 "kim.y"
+#line 287 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2398 "y.tab.c"
+#line 2404 "y.tab.c"
 break;
 case 135:
-#line 285 "kim.y"
+#line 288 "kim.y"
 	{yyval=makeNode(N_EXP_PRE_INC,0,yystack.l_mark[0],0);}
-#line 2403 "y.tab.c"
+#line 2409 "y.tab.c"
 break;
 case 136:
-#line 286 "kim.y"
+#line 289 "kim.y"
 	{yyval=makeNode(N_EXP_PRE_DEC,0,yystack.l_mark[0],0);}
-#line 2408 "y.tab.c"
+#line 2414 "y.tab.c"
 break;
 case 137:
-#line 287 "kim.y"
+#line 290 "kim.y"
 	{yyval=makeNode(N_EXP_AMP,0,yystack.l_mark[0],0);}
-#line 2413 "y.tab.c"
+#line 2419 "y.tab.c"
 break;
 case 138:
-#line 288 "kim.y"
+#line 291 "kim.y"
 	{yyval=makeNode(N_EXP_STAR,0,yystack.l_mark[0],0);}
-#line 2418 "y.tab.c"
+#line 2424 "y.tab.c"
 break;
 case 139:
-#line 289 "kim.y"
+#line 292 "kim.y"
 	{yyval=makeNode(N_EXP_NOT,0,yystack.l_mark[0],0);}
-#line 2423 "y.tab.c"
+#line 2429 "y.tab.c"
 break;
 case 140:
-#line 290 "kim.y"
+#line 293 "kim.y"
 	{yyval=makeNode(N_EXP_MINUS,0,yystack.l_mark[0],0);}
-#line 2428 "y.tab.c"
+#line 2434 "y.tab.c"
 break;
 case 141:
-#line 291 "kim.y"
+#line 294 "kim.y"
 	{yyval=yystack.l_mark[-1];}
-#line 2433 "y.tab.c"
+#line 2439 "y.tab.c"
 break;
 case 142:
-#line 292 "kim.y"
+#line 295 "kim.y"
 	{yyval=makeNode(N_EXP_SIZE_EXP,0,yystack.l_mark[0],0);}
-#line 2438 "y.tab.c"
+#line 2444 "y.tab.c"
 break;
 case 143:
-#line 293 "kim.y"
+#line 296 "kim.y"
 	{yyval=makeNode(N_EXP_SIZE_TYPE,0,yystack.l_mark[-1],0);}
-#line 2443 "y.tab.c"
+#line 2449 "y.tab.c"
 break;
 case 144:
-#line 296 "kim.y"
+#line 299 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2448 "y.tab.c"
+#line 2454 "y.tab.c"
 break;
 case 145:
-#line 297 "kim.y"
+#line 300 "kim.y"
 	{yyval=makeNode(N_EXP_CAST,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2453 "y.tab.c"
+#line 2459 "y.tab.c"
 break;
 case 146:
-#line 300 "kim.y"
+#line 303 "kim.y"
 	{yyval=setTypeNameSpecifier(yystack.l_mark[0],yystack.l_mark[-1]);}
-#line 2458 "y.tab.c"
+#line 2464 "y.tab.c"
 break;
 case 147:
-#line 303 "kim.y"
+#line 306 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2463 "y.tab.c"
+#line 2469 "y.tab.c"
 break;
 case 148:
-#line 304 "kim.y"
+#line 307 "kim.y"
 	{yyval=makeNode(N_EXP_MUL,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2468 "y.tab.c"
+#line 2474 "y.tab.c"
 break;
 case 149:
-#line 305 "kim.y"
+#line 308 "kim.y"
 	{yyval= makeNode(N_EXP_DIV,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2473 "y.tab.c"
+#line 2479 "y.tab.c"
 break;
 case 150:
-#line 306 "kim.y"
+#line 309 "kim.y"
 	{yyval= makeNode(N_EXP_MOD,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2478 "y.tab.c"
+#line 2484 "y.tab.c"
 break;
 case 151:
-#line 309 "kim.y"
+#line 312 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2483 "y.tab.c"
+#line 2489 "y.tab.c"
 break;
 case 152:
-#line 310 "kim.y"
+#line 313 "kim.y"
 	{yyval=makeNode(N_EXP_ADD,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2488 "y.tab.c"
+#line 2494 "y.tab.c"
 break;
 case 153:
-#line 311 "kim.y"
+#line 314 "kim.y"
 	{yyval=makeNode(N_EXP_SUB,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2493 "y.tab.c"
+#line 2499 "y.tab.c"
 break;
 case 154:
-#line 314 "kim.y"
+#line 317 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2498 "y.tab.c"
+#line 2504 "y.tab.c"
 break;
 case 155:
-#line 315 "kim.y"
+#line 318 "kim.y"
 	{yyval=makeNode(N_EXP_LSS,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2503 "y.tab.c"
+#line 2509 "y.tab.c"
 break;
 case 156:
-#line 316 "kim.y"
+#line 319 "kim.y"
 	{yyval=makeNode(N_EXP_GTR,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2508 "y.tab.c"
+#line 2514 "y.tab.c"
 break;
 case 157:
-#line 317 "kim.y"
+#line 320 "kim.y"
 	{yyval=makeNode(N_EXP_LEQ,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2513 "y.tab.c"
+#line 2519 "y.tab.c"
 break;
 case 158:
-#line 318 "kim.y"
+#line 321 "kim.y"
 	{yyval=makeNode(N_EXP_GEQ,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2518 "y.tab.c"
+#line 2524 "y.tab.c"
 break;
 case 159:
-#line 321 "kim.y"
+#line 324 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2523 "y.tab.c"
+#line 2529 "y.tab.c"
 break;
 case 160:
-#line 322 "kim.y"
+#line 325 "kim.y"
 	{yyval=makeNode(N_EXP_EQL,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2528 "y.tab.c"
+#line 2534 "y.tab.c"
 break;
 case 161:
-#line 323 "kim.y"
+#line 326 "kim.y"
 	{yyval=makeNode(N_EXP_NEQ,yystack.l_mark[-2],0,yystack.l_mark[0]);}
-#line 2533 "y.tab.c"
+#line 2539 "y.tab.c"
 break;
 case 162:
-#line 326 "kim.y"
+#line 329 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2538 "y.tab.c"
+#line 2544 "y.tab.c"
 break;
 case 163:
-#line 327 "kim.y"
+#line 330 "kim.y"
 	{yyval=makeNode(N_EXP_AND,yystack.l_mark[-2],NIL,yystack.l_mark[0]);}
-#line 2543 "y.tab.c"
+#line 2549 "y.tab.c"
 break;
 case 164:
-#line 330 "kim.y"
+#line 333 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2548 "y.tab.c"
+#line 2554 "y.tab.c"
 break;
 case 165:
-#line 331 "kim.y"
+#line 334 "kim.y"
 	{yyval=makeNode(N_EXP_OR,yystack.l_mark[-2],NIL,yystack.l_mark[0]);}
-#line 2553 "y.tab.c"
+#line 2559 "y.tab.c"
 break;
 case 166:
-#line 334 "kim.y"
-	{yyval=yystack.l_mark[0];}
-#line 2558 "y.tab.c"
-break;
-case 167:
 #line 337 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2563 "y.tab.c"
+#line 2564 "y.tab.c"
 break;
-case 168:
+case 167:
 #line 340 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2568 "y.tab.c"
+#line 2569 "y.tab.c"
 break;
-case 169:
+case 168:
 #line 343 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2573 "y.tab.c"
+#line 2574 "y.tab.c"
+break;
+case 169:
+#line 346 "kim.y"
+	{yyval=yystack.l_mark[0];}
+#line 2579 "y.tab.c"
 break;
 case 170:
-#line 344 "kim.y"
+#line 347 "kim.y"
 	{yyval=makeNode(N_EXP_ASSIGN,yystack.l_mark[-2],NIL,yystack.l_mark[0]);}
-#line 2578 "y.tab.c"
+#line 2584 "y.tab.c"
 break;
 case 171:
-#line 347 "kim.y"
+#line 350 "kim.y"
 	{yyval=yystack.l_mark[0];}
-#line 2583 "y.tab.c"
+#line 2589 "y.tab.c"
 break;
-#line 2585 "y.tab.c"
+#line 2591 "y.tab.c"
     default:
         break;
     }
