@@ -143,7 +143,7 @@ A_TYPE *sem_expression(A_NODE *node) {
     case N_EXP_ARRAY:
         t1 = sem_expression(node->llink);
         t2 = sem_expression(node->rlink);
-        // usual binary conversion abon)iz
+        // usual binary conversion(code);
         t = convertUsualBinaryConversion(node);
         t1 = node->llink->type;
         t2 = node->rlink->type;

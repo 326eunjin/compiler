@@ -197,7 +197,7 @@ A_SPECIFIER *updateSpecifier(A_SPECIFIER *p, A_TYPE *t, S_KIND s) {
     }
     return (p);
 }
-// link two declaraor list id1 & id2
+// link two declarator list id1 & id2
 A_ID *linkDeclaratorList(A_ID *id1, A_ID *id2) {
     A_ID *m = id1;
     if (id1 == NIL)
@@ -417,7 +417,7 @@ A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *t, ID_KIND k, A_ID *id) {
     id->kind = k;
     return (t);
 }
-// check function parameters with protype
+// check function parameters with prototype
 BOOLEAN isNotSameFormalParameters(A_ID *a, A_ID *b) {
     if (a == NIL) // no parameters in prototype
         return (FALSE);
